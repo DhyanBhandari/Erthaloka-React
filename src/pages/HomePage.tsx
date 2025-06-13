@@ -4,6 +4,7 @@ import AboutErthaLokaSection from '../components/AboutErthaLokaSection.tsx';
 import WhyNowSection from '../components/WhyNowSection.tsx';
 import WhatWeDoSection from '../components/WhatWeDo.tsx';
 import ErthalokaEcosystemSection from '../components/ErthalokaEcosystemSection.tsx';
+import SubscriptionTeaserSection from '../components/SubscriptionTeaserSection.tsx';
 import UpcomingSection from '../components/UpcomingSection.tsx';
 import SustainableTechInnovationsSection from '../components/SustainableTechInnovations.tsx';
 import GetInvolvedSection from '../components/GetInvolvedSection.tsx';
@@ -24,6 +25,7 @@ const HomePage: React.FC<HomePageProps> = ({ setCurrentPath }) => {
       <ErthalokaEcosystemSection setCurrentPath={setCurrentPath} />
       <UpcomingSection setCurrentPath={setCurrentPath} />
       <SustainableTechInnovationsSection />
+      <SubscriptionTeaserSection setCurrentPath={setCurrentPath} />
       <GetInvolvedSection />
       <TeamSection />
       <GetInTouchSection />

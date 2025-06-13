@@ -1,12 +1,15 @@
 // src/App.tsx
 import React, { useState } from 'react';
 import Navbar from './components/Navbar.tsx';
+import { AuthProvider } from './contexts/AuthContext.tsx'; // AuthProvider is imported
 import Footer from './components/Footer.tsx';
 import HomePage from './pages/HomePage.tsx';
 import ErthaGramaPage from './pages/ErthaGramaPage.tsx';
 import ErthaCANnectPage from './pages/ErthaCANnectPage.tsx';
 import ErthaBazaarPage from './pages/ErthaBazaarPage.tsx';
 import SustainableCirclePage from './pages/SustainableCirclePage.tsx';
+import SubscriptionPlansPage from './pages/SubscriptionPlansPage.tsx';
+import UserDashboard from './components/UserDashboard.tsx';
 
 
 // Main App Component
@@ -20,6 +23,8 @@ const App: React.FC = () => {
     '/erthacannect': ErthaCANnectPage,
     '/erthabazaar': ErthaBazaarPage,
     '/sustainablecircle': SustainableCirclePage,
+    '/subscription-plans': SubscriptionPlansPage,
+    '/dashboard': UserDashboard,
     '/erthakriya': () => <div className="pt-20 min-h-screen text-white flex items-center justify-center relative z-10"><div className="bg-black/70 backdrop-blur-lg rounded-3xl p-8 border border-green-500/20"><h1 className="text-4xl">ErthaKriya - Coming Soon</h1></div></div>
   };
 
@@ -42,16 +47,21 @@ const App: React.FC = () => {
         <div className="absolute inset-0 bg-black/40"></div>
       </div>
 
-      {/* Main Content */}
-      <div className="relative z-10">
-        <Navbar currentPath={currentPath} setCurrentPath={setCurrentPath} />
-        <main>
-          <CurrentComponent setCurrentPath={setCurrentPath} /> {/* Pass setCurrentPath to CurrentComponent */}
-        </main>
-        <Footer />
-      </div>
+      {/* Main Content needs to be wrapped by AuthProvider */}
+      {/* <--- ADD AUTHPROVIDER HERE --- > */}
+      <AuthProvider> 
+        <div className="relative z-10">
+          <Navbar currentPath={currentPath} setCurrentPath={setCurrentPath} />
+          <main>
+            <CurrentComponent setCurrentPath={setCurrentPath} /> {/* Pass setCurrentPath to CurrentComponent */}
+          </main>
+          <Footer />
+        </div>
+      </AuthProvider>
+      {/* <--- AUTHPROVIDER ENDS HERE --- > */}
 
       <style>{`
+        /* Your existing styles here */
         @keyframes fadeIn {
           from {
             opacity: 0;
