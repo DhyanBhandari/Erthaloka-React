@@ -7,6 +7,9 @@ const morgan = require('morgan');
 const passport = require('passport');
 const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
+const compression = require('compression');
+const path = require('path');
+const multer = require('multer');
 require('dotenv').config();
 
 // Import routes
@@ -17,6 +20,9 @@ const userRoutes = require('./routes/users');
 // Import database
 const pool = require('./config/database');
 
+// Import services
+const fileService = require('./services/fileService');
+
 // Import passport configuration
 require('./config/passport');
 
@@ -25,6 +31,9 @@ const PORT = process.env.PORT || 5000;
 
 // Trust proxy (important for rate limiting behind reverse proxy)
 app.set('trust proxy', 1);
+
+// Compression middleware
+app.use(compression());
 
 // Rate limiting
 const limiter = rateLimit({
@@ -35,26 +44,44 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 
-// Middleware
+// Security middleware
 app.use(helmet({
-  crossOriginResourcePolicy: { policy: "cross-origin" }
+  crossOriginResourcePolicy: { policy: "cross-origin" },
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      imgSrc: ["'self'", "data:", "https:"],
+      scriptSrc: ["'self'", "https://checkout.razorpay.com"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      connectSrc: ["'self'", "https://api.razorpay.com"],
+    },
+  },
 }));
+
+// CORS configuration
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
 }));
+
+// Logging
 app.use(morgan('combined'));
+
+// Rate limiting
 app.use(limiter);
+
+// Body parsing middleware
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Session configuration
+// Session configuration (using PostgreSQL, no Redis)
 app.use(session({
   store: new pgSession({
     pool: pool,
-    tableName: 'user_sessions'
+    tableName: 'user_sessions',
+    createTableIfMissing: true
   }),
   secret: process.env.SESSION_SECRET || 'your-secret-key-change-in-production',
   resave: false,
@@ -63,26 +90,139 @@ app.use(session({
     secure: process.env.NODE_ENV === 'production',
     httpOnly: true,
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
-  }
+  },
+  name: 'erthaloka.sid' // Custom session name
 }));
 
 // Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Static file serving for uploads
+app.use('/uploads', express.static(path.join(__dirname, process.env.UPLOAD_PATH || './uploads'), {
+  maxAge: '1d', // Cache for 1 day
+  etag: true,
+  lastModified: true
+}));
+
 // Health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({
-    status: 'OK',
-    timestamp: new Date().toISOString(),
-    uptime: process.uptime()
-  });
+app.get('/health', async (req, res) => {
+  try {
+    // Test database connection
+    await pool.query('SELECT 1');
+    
+    // Get basic stats
+    const storageInfo = await fileService.getStorageUsage();
+    const memUsage = process.memoryUsage();
+    
+    res.status(200).json({
+      status: 'OK',
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime(),
+      environment: process.env.NODE_ENV || 'development',
+      database: 'connected',
+      storage: {
+        totalMB: storageInfo.totalSizeMB,
+        breakdown: storageInfo.breakdown
+      },
+      memory: {
+        rss: Math.round(memUsage.rss / 1024 / 1024) + 'MB',
+        heapUsed: Math.round(memUsage.heapUsed / 1024 / 1024) + 'MB',
+        heapTotal: Math.round(memUsage.heapTotal / 1024 / 1024) + 'MB'
+      }
+    });
+  } catch (error) {
+    console.error('Health check failed:', error);
+    res.status(503).json({
+      status: 'ERROR',
+      timestamp: new Date().toISOString(),
+      error: 'Service unavailable'
+    });
+  }
 });
 
+// File upload endpoints
+app.post('/api/upload/image', 
+  authRoutes.authenticateToken,
+  fileService.getMulterConfig('images').single('image'),
+  async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({
+          success: false,
+          message: 'No image file provided'
+        });
+      }
+
+      const result = await fileService.uploadImage(req.file);
+      res.json({
+        success: true,
+        message: 'Image uploaded successfully',
+        file: result
+      });
+    } catch (error) {
+      console.error('Image upload error:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to upload image'
+      });
+    }
+  }
+);
+
+app.post('/api/upload/document',
+  authRoutes.authenticateToken,
+  fileService.getMulterConfig('documents').single('document'),
+  async (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({
+          success: false,
+          message: 'No document file provided'
+        });
+      }
+
+      const result = await fileService.uploadDocument(req.file);
+      res.json({
+        success: true,
+        message: 'Document uploaded successfully',
+        file: result
+      });
+    } catch (error) {
+      console.error('Document upload error:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to upload document'
+      });
+    }
+  }
+);
+
 // API Routes
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authRoutes.router);
 app.use('/api/subscriptions', subscriptionRoutes);
 app.use('/api/users', userRoutes);
+
+// Admin routes (if needed)
+app.get('/api/admin/storage-stats', 
+  authRoutes.authenticateToken,
+  // Add admin middleware here if you have one
+  async (req, res) => {
+    try {
+      const storageInfo = await fileService.getStorageUsage();
+      res.json({
+        success: true,
+        storage: storageInfo
+      });
+    } catch (error) {
+      console.error('Storage stats error:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Failed to get storage statistics'
+      });
+    }
+  }
+);
 
 // 404 handler
 app.use('*', (req, res) => {
@@ -95,6 +235,20 @@ app.use('*', (req, res) => {
 // Global error handler
 app.use((err, req, res, next) => {
   console.error('Error:', err);
+
+  // Multer errors (file upload)
+  if (err instanceof multer.MulterError) {
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({
+        success: false,
+        message: 'File too large. Maximum size is 10MB.'
+      });
+    }
+    return res.status(400).json({
+      success: false,
+      message: 'File upload error: ' + err.message
+    });
+  }
 
   // Mongoose validation error
   if (err.name === 'ValidationError') {
@@ -151,21 +305,46 @@ app.use((err, req, res, next) => {
 });
 
 // Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('SIGTERM received, shutting down gracefully');
-  process.exit(0);
-});
+const gracefulShutdown = () => {
+  console.log('Received shutdown signal, closing server gracefully...');
+  
+  server.close(async (err) => {
+    if (err) {
+      console.error('Error during graceful shutdown:', err);
+      process.exit(1);
+    }
+    
+    try {
+      // Close database connections
+      await pool.end();
+      console.log('Database connections closed.');
+      
+      console.log('Server shut down gracefully.');
+      process.exit(0);
+    } catch (error) {
+      console.error('Error closing database connections:', error);
+      process.exit(1);
+    }
+  });
 
-process.on('SIGINT', () => {
-  console.log('SIGINT received, shutting down gracefully');
-  process.exit(0);
-});
+  // Force close after 30 seconds
+  setTimeout(() => {
+    console.error('Could not close connections in time, forcefully shutting down');
+    process.exit(1);
+  }, 30000);
+};
+
+process.on('SIGTERM', gracefulShutdown);
+process.on('SIGINT', gracefulShutdown);
 
 // Start server
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📧 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🌐 Frontend URL: ${process.env.FRONTEND_URL || 'http://localhost:3000'}`);
+  console.log(`📁 Upload path: ${process.env.UPLOAD_PATH || './uploads'}`);
+  console.log(`💾 Session storage: PostgreSQL (no Redis required)`);
+  console.log(`📱 SMS provider: ${process.env.SMS_PROVIDER || 'mock'}`);
 });
 
 module.exports = app;

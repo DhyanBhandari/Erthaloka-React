@@ -29,7 +29,7 @@ const ErthalokaEcosystemSection: React.FC<ErthalokaEcosystemSectionProps> = ({ s
     },
     {
       title: "🔧 Sustainable Circle : Events",
-      image: "../images/SustainableCircle.png",
+      image: "../images/SustainABLEcircle.png",
       gradient: "from-orange-800 to-orange-900",
       hoverGradient: "group-hover:from-orange-500 group-hover:to-yellow-400",
       link: "/sustainablecircle"

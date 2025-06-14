@@ -1,6 +1,8 @@
 import React from 'react';
 import { Leaf } from 'lucide-react';
 
+
+
 const HeroSection: React.FC = () => {
   return (
     <section id="home" className="relative w-full h-screen flex items-center justify-center">
@@ -28,12 +30,12 @@ const HeroSection: React.FC = () => {
             Explore the ECOsystem
           </button>
           <button
-            onClick={() => window.open('https://chat.whatsapp.com/LUlrfRH2c17A2PmHAUaajl', '_blank')}
-            className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full hover:bg-white hover:text-green-800 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white shadow-2xl hover:shadow-white/50"
-            aria-label="Join our WhatsApp community"
-          >
-            Join the Movement
-          </button>
+    onClick={() => window.open('/ErthaCANnect', '_blank', 'noopener,noreferrer')}
+  className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full hover:bg-white hover:text-green-800 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white shadow-2xl hover:shadow-white/50"
+  aria-label="Join our WhatsApp community"
+>
+  Join the Community
+</button>
         </div>
       </div>
     </section>

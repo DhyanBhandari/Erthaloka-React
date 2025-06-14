@@ -10,7 +10,10 @@
       "lint": "eslint .",
       "format": "prettier --write .",
       "migrate": "node scripts/migrate.js",
-      "seed": "node scripts/seed.js"
+      "seed": "node scripts/seed.js",
+      "cleanup-files": "node scripts/cleanup-files.js",
+      "storage-report": "node scripts/cleanup-files.js report",
+      "storage-cleanup": "node scripts/cleanup-files.js cleanup"
     },
     "keywords": [
       "nodejs",
@@ -42,12 +45,12 @@
       "razorpay": "^2.9.2",
       "crypto": "^1.0.1",
       "nodemailer": "^6.9.7",
-      "twilio": "^4.19.0",
       "multer": "^1.4.5-lts.1",
       "sharp": "^0.32.6",
-      "aws-sdk": "^2.1491.0",
       "compression": "^1.7.4",
-      "cookie-parser": "^1.4.6"
+      "cookie-parser": "^1.4.6",
+      "fs-extra": "^11.1.1",
+      "cron": "^3.1.6"
     },
     "devDependencies": {
       "nodemon": "^3.0.2",
@@ -69,4 +72,4 @@
       "url": "https://github.com/erthaloka/backend/issues"
     },
     "homepage": "https://erthaloka.com"
-  }
+}
