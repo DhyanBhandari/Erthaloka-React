@@ -216,28 +216,95 @@ docker-compose exec backend npm run seed
 - Backend API: http://localhost:5000
 
 ## 📁 Project Structure
-
-```
-erthaloka-platform/
-├── backend/                    # Node.js Express API
-│   ├── config/                # Database & passport configuration
-│   ├── middleware/            # Authentication & validation middleware
-│   ├── routes/                # API route handlers
-│   ├── services/              # Email, SMS, and external services
-│   ├── scripts/               # Database migration & seeding scripts
-│   ├── utils/                 # Utility functions
-│   └── server.js              # Main server file
-├── frontend/                  # React TypeScript application
+'''
+erthaloka-project/
+├── frontend/                          # React TypeScript Frontend
+│   ├── public/
+│   │   ├── index.html
+│   │   ├── logo4.png
+│   │   ├── bg.jpeg
+│   │   ├── logo2.png
+│   │   └── atal-incubation.png
 │   ├── src/
-│   │   ├── components/        # Reusable UI components
-│   │   ├── contexts/          # React context providers
-│   │   ├── pages/             # Page components
-│   │   └── utils/             # Frontend utilities
-│   └── public/                # Static assets
-├── docker-compose.yml         # Multi-container orchestration
-├── Dockerfile                 # Container configuration
-└── README.md                 # This file
-```
+│   │   ├── components/
+│   │   │   ├── Navbar.tsx
+│   │   │   ├── Footer.tsx
+│   │   │   ├── HeroSection.tsx
+│   │   │   ├── AboutErthaLokaSection.tsx
+│   │   │   ├── WhatWeDo.tsx
+│   │   │   ├── ErthalokaEcosystemSection.tsx
+│   │   │   ├── SustainableTechInnovations.tsx
+│   │   │   ├── SubscriptionTeaserSection.tsx
+│   │   │   ├── UpcomingSection.tsx
+│   │   │   ├── GetInvolvedSection.tsx
+│   │   │   ├── GetInTouch.tsx
+│   │   │   ├── TeamSection.tsx
+│   │   │   ├── AuthModal.tsx
+│   │   │   ├── OTPVerification.tsx
+│   │   │   ├── ProtectedRoute.tsx
+│   │   │   ├── UserDashboard.tsx
+│   │   │   ├── AdminPanel.tsx              # 🆕 NEW
+│   │   │   └── CarbonCoinDisplay.tsx       # 🆕 NEW
+│   │   ├── contexts/
+│   │   │   └── AuthContext.tsx
+│   │   ├── hooks/
+│   │   │   └── useCarbonCoins.ts           # 🆕 NEW
+│   │   ├── pages/
+│   │   │   ├── HomePage.tsx
+│   │   │   ├── ErthaGramaPage.tsx
+│   │   │   ├── ErthaCANnectPage.tsx
+│   │   │   ├── ErthaBazaarPage.tsx
+│   │   │   ├── SustainableCirclePage.tsx
+│   │   │   └── SubscriptionPlansPage.tsx
+│   │   ├── services/
+│   │   │   └── analytics.ts               # 🆕 NEW
+│   │   ├── App.tsx                        # ✏️ UPDATED
+│   │   ├── index.tsx
+│   │   └── index.css
+│   ├── package.json
+│   ├── tailwind.config.js
+│   └── postcss.config.js
+│
+├── backend/                           # Node.js Express Backend
+│   ├── config/
+│   │   ├── database.js
+│   │   └── passport.js
+│   ├── middleware/
+│   │   └── adminAuth.js               # 🆕 NEW
+│   ├── routes/
+│   │   ├── auth.js
+│   │   ├── subscription.js
+│   │   ├── users.js
+│   │   └── admin.js                   # 🆕 NEW
+│   ├── services/
+│   │   ├── emailService.js
+│   │   ├── fileService.js
+│   │   ├── smsService.js
+│   │   └── carbonCoinService.js       # 🆕 NEW
+│   ├── scripts/
+│   │   ├── migrate.js
+│   │   ├── seed.js
+│   │   ├── cleanup-files.js
+│   │   └── carbon-coins-migration.js  # 🆕 NEW
+│   ├── utils/
+│   │   └── index.js
+│   ├── uploads/                       # File upload directory
+│   │   ├── images/
+│   │   ├── documents/
+│   │   └── profiles/
+│   ├── .env                          # ✏️ UPDATED
+│   ├── .env.example                  # ✏️ UPDATED
+│   ├── package.json
+│   ├── server.js                     # ✏️ UPDATED
+│   ├── healthcheck.js
+│   └── Docs.md
+│
+└── deployment/                       # Deployment configs
+    ├── docker-compose.yml
+    ├── Dockerfile.frontend
+    ├── Dockerfile.backend
+    └── nginx.conf
+    '''
 
 ## 🔧 API Documentation
 

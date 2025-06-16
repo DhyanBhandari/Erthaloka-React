@@ -1,4 +1,3 @@
-// routes/auth.js
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -6,6 +5,7 @@ const passport = require('passport');
 const rateLimit = require('express-rate-limit');
 const pool = require('../config/database');
 const { body, validationResult } = require('express-validator');
+const carbonCoinService = require('../services/carbonCoinService'); // NEW
 
 const router = express.Router();
 
@@ -99,11 +99,11 @@ router.post('/register', authLimiter, validateRegistration, async (req, res) => 
       passwordHash = await bcrypt.hash(password, 12);
     }
 
-    // Create user
+    // Create user with 50 carbon coins bonus
     const newUser = await pool.query(
-      `INSERT INTO users (name, email, phone, password_hash) 
-       VALUES ($1, $2, $3, $4) 
-       RETURNING id, name, email, phone, subscription_plan, subscription_status, created_at`,
+      `INSERT INTO users (name, email, phone, password_hash, carbon_coins) 
+       VALUES ($1, $2, $3, $4, 50) 
+       RETURNING id, name, email, phone, carbon_coins, subscription_plan, subscription_status, created_at`,
       [name, email, phone, passwordHash]
     );
 
@@ -119,6 +119,7 @@ router.post('/register', authLimiter, validateRegistration, async (req, res) => 
         name: user.name,
         email: user.email,
         phone: user.phone,
+        carbonCoins: user.carbon_coins,
         subscriptionPlan: user.subscription_plan,
         subscriptionStatus: user.subscription_status,
         createdAt: user.created_at
@@ -149,7 +150,7 @@ router.post('/login', authLimiter, validateLogin, async (req, res) => {
 
     // Find user
     const userResult = await pool.query(
-      'SELECT id, name, email, phone, password_hash, subscription_plan, subscription_status, created_at FROM users WHERE email = $1',
+      'SELECT id, name, email, phone, password_hash, carbon_coins, subscription_plan, subscription_status, created_at FROM users WHERE email = $1',
       [email]
     );
 
@@ -189,6 +190,7 @@ router.post('/login', authLimiter, validateLogin, async (req, res) => {
         name: user.name,
         email: user.email,
         phone: user.phone,
+        carbonCoins: user.carbon_coins,
         subscriptionPlan: user.subscription_plan,
         subscriptionStatus: user.subscription_status,
         createdAt: user.created_at
@@ -283,17 +285,17 @@ router.post('/verify-otp', authLimiter, async (req, res) => {
 
     // Check if user exists
     let userResult = await pool.query(
-      'SELECT id, name, email, phone, subscription_plan, subscription_status, created_at FROM users WHERE phone = $1',
+      'SELECT id, name, email, phone, carbon_coins, subscription_plan, subscription_status, created_at FROM users WHERE phone = $1',
       [phone]
     );
 
     let user;
     if (userResult.rows.length === 0) {
-      // Create new user
+      // Create new user with 50 carbon coins bonus
       const newUser = await pool.query(
-        `INSERT INTO users (name, phone) 
-         VALUES ($1, $2) 
-         RETURNING id, name, email, phone, subscription_plan, subscription_status, created_at`,
+        `INSERT INTO users (name, phone, carbon_coins) 
+         VALUES ($1, $2, 50) 
+         RETURNING id, name, email, phone, carbon_coins, subscription_plan, subscription_status, created_at`,
         [`User ${phone.slice(-4)}`, phone]
       );
       user = newUser.rows[0];
@@ -312,6 +314,7 @@ router.post('/verify-otp', authLimiter, async (req, res) => {
         name: user.name,
         email: user.email,
         phone: user.phone,
+        carbonCoins: user.carbon_coins,
         subscriptionPlan: user.subscription_plan,
         subscriptionStatus: user.subscription_status,
         createdAt: user.created_at
@@ -333,8 +336,13 @@ router.get('/google', passport.authenticate('google', {
 
 router.get('/google/callback', 
   passport.authenticate('google', { session: false }),
-  (req, res) => {
+  async (req, res) => {
     try {
+      // Grant signup bonus for new Google users
+      if (req.user && req.user.carbon_coins === 0) {
+        await carbonCoinService.grantSignupBonus(req.user.id);
+      }
+
       const token = generateToken(req.user.id);
       
       // Redirect to frontend with token
@@ -370,7 +378,7 @@ const authenticateToken = (req, res, next) => {
 
     try {
       const userResult = await pool.query(
-        'SELECT id, name, email, phone, profile_picture, subscription_plan, subscription_status, created_at FROM users WHERE id = $1',
+        'SELECT id, name, email, phone, profile_picture, carbon_coins, subscription_plan, subscription_status, created_at FROM users WHERE id = $1',
         [payload.userId]
       );
 
@@ -403,6 +411,7 @@ router.get('/profile', authenticateToken, (req, res) => {
       email: req.user.email,
       phone: req.user.phone,
       profilePicture: req.user.profile_picture,
+      carbonCoins: req.user.carbon_coins,
       subscriptionPlan: req.user.subscription_plan,
       subscriptionStatus: req.user.subscription_status,
       createdAt: req.user.created_at
@@ -439,7 +448,7 @@ router.put('/update-profile', authenticateToken, async (req, res) => {
            phone = COALESCE($3, phone),
            updated_at = CURRENT_TIMESTAMP
        WHERE id = $4 
-       RETURNING id, name, email, phone, profile_picture, subscription_plan, subscription_status, created_at`,
+       RETURNING id, name, email, phone, profile_picture, carbon_coins, subscription_plan, subscription_status, created_at`,
       [name, email, phone, userId]
     );
 
@@ -452,6 +461,7 @@ router.put('/update-profile', authenticateToken, async (req, res) => {
         email: updatedUser.rows[0].email,
         phone: updatedUser.rows[0].phone,
         profilePicture: updatedUser.rows[0].profile_picture,
+        carbonCoins: updatedUser.rows[0].carbon_coins,
         subscriptionPlan: updatedUser.rows[0].subscription_plan,
         subscriptionStatus: updatedUser.rows[0].subscription_status,
         createdAt: updatedUser.rows[0].created_at

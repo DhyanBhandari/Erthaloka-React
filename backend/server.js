@@ -1,4 +1,3 @@
-// server.js
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -14,14 +13,16 @@ require('dotenv').config();
 
 // Import routes
 const authRoutes = require('./routes/auth');
-const subscriptionRoutes = require('./routes/subscriptions');
+const subscriptionRoutes = require('./routes/subscription');
 const userRoutes = require('./routes/users');
+const adminRoutes = require('./routes/admin'); // NEW
 
 // Import database
 const pool = require('./config/database');
 
 // Import services
 const fileService = require('./services/fileService');
+const carbonCoinService = require('./services/carbonCoinService'); // NEW
 
 // Import passport configuration
 require('./config/passport');
@@ -51,9 +52,9 @@ app.use(helmet({
     directives: {
       defaultSrc: ["'self'"],
       imgSrc: ["'self'", "data:", "https:"],
-      scriptSrc: ["'self'", "https://checkout.razorpay.com"],
+      scriptSrc: ["'self'", "https://checkout.razorpay.com", "https://www.googletagmanager.com"],
       styleSrc: ["'self'", "'unsafe-inline'"],
-      connectSrc: ["'self'", "https://api.razorpay.com"],
+      connectSrc: ["'self'", "https://api.razorpay.com", "https://www.google-analytics.com"],
     },
   },
 }));
@@ -141,88 +142,46 @@ app.get('/health', async (req, res) => {
   }
 });
 
-// File upload endpoints
-app.post('/api/upload/image', 
-  authRoutes.authenticateToken,
-  fileService.getMulterConfig('images').single('image'),
-  async (req, res) => {
-    try {
-      if (!req.file) {
-        return res.status(400).json({
-          success: false,
-          message: 'No image file provided'
-        });
-      }
+// Carbon Coin endpoints
+app.post('/api/users/spend-coins', authRoutes.authenticateToken, async (req, res) => {
+  try {
+    const { amount, reason } = req.body;
+    const userId = req.user.id;
 
-      const result = await fileService.uploadImage(req.file);
-      res.json({
-        success: true,
-        message: 'Image uploaded successfully',
-        file: result
-      });
-    } catch (error) {
-      console.error('Image upload error:', error);
-      res.status(500).json({
-        success: false,
-        message: 'Failed to upload image'
-      });
-    }
+    const result = await carbonCoinService.deductCoins(userId, amount, reason);
+    res.json({
+      success: true,
+      newBalance: result.newBalance,
+      message: result.message
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message
+    });
   }
-);
+});
 
-app.post('/api/upload/document',
-  authRoutes.authenticateToken,
-  fileService.getMulterConfig('documents').single('document'),
-  async (req, res) => {
-    try {
-      if (!req.file) {
-        return res.status(400).json({
-          success: false,
-          message: 'No document file provided'
-        });
-      }
-
-      const result = await fileService.uploadDocument(req.file);
-      res.json({
-        success: true,
-        message: 'Document uploaded successfully',
-        file: result
-      });
-    } catch (error) {
-      console.error('Document upload error:', error);
-      res.status(500).json({
-        success: false,
-        message: 'Failed to upload document'
-      });
-    }
+app.get('/api/users/coin-balance', authRoutes.authenticateToken, async (req, res) => {
+  try {
+    const balance = await carbonCoinService.getBalance(req.user.id);
+    res.json({
+      success: true,
+      balance
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
   }
-);
+});
 
 // API Routes
 app.use('/api/auth', authRoutes.router);
 app.use('/api/subscriptions', subscriptionRoutes);
 app.use('/api/users', userRoutes);
-
-// Admin routes (if needed)
-app.get('/api/admin/storage-stats', 
-  authRoutes.authenticateToken,
-  // Add admin middleware here if you have one
-  async (req, res) => {
-    try {
-      const storageInfo = await fileService.getStorageUsage();
-      res.json({
-        success: true,
-        storage: storageInfo
-      });
-    } catch (error) {
-      console.error('Storage stats error:', error);
-      res.status(500).json({
-        success: false,
-        message: 'Failed to get storage statistics'
-      });
-    }
-  }
-);
+app.use('/api/admin', adminRoutes); // NEW ADMIN ROUTES
 
 // 404 handler
 app.use('*', (req, res) => {
@@ -235,66 +194,6 @@ app.use('*', (req, res) => {
 // Global error handler
 app.use((err, req, res, next) => {
   console.error('Error:', err);
-
-  // Multer errors (file upload)
-  if (err instanceof multer.MulterError) {
-    if (err.code === 'LIMIT_FILE_SIZE') {
-      return res.status(400).json({
-        success: false,
-        message: 'File too large. Maximum size is 10MB.'
-      });
-    }
-    return res.status(400).json({
-      success: false,
-      message: 'File upload error: ' + err.message
-    });
-  }
-
-  // Mongoose validation error
-  if (err.name === 'ValidationError') {
-    const errors = Object.values(err.errors).map(e => e.message);
-    return res.status(400).json({
-      success: false,
-      message: 'Validation Error',
-      errors
-    });
-  }
-
-  // JWT errors
-  if (err.name === 'JsonWebTokenError') {
-    return res.status(401).json({
-      success: false,
-      message: 'Invalid token'
-    });
-  }
-
-  if (err.name === 'TokenExpiredError') {
-    return res.status(401).json({
-      success: false,
-      message: 'Token expired'
-    });
-  }
-
-  // PostgreSQL errors
-  if (err.code) {
-    switch (err.code) {
-      case '23505': // Unique constraint violation
-        return res.status(400).json({
-          success: false,
-          message: 'Resource already exists'
-        });
-      case '23503': // Foreign key constraint violation
-        return res.status(400).json({
-          success: false,
-          message: 'Referenced resource does not exist'
-        });
-      case '23502': // Not null constraint violation
-        return res.status(400).json({
-          success: false,
-          message: 'Required field is missing'
-        });
-    }
-  }
 
   // Default error
   res.status(err.status || 500).json({
