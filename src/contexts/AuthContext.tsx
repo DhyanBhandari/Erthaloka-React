@@ -7,6 +7,7 @@ interface User {
   phone?: string;
   name: string;
   profilePicture?: string;
+  carbonCoins: number; // Add carbon coins
   subscriptionPlan?: 'resident' | 'ambassador' | 'warrior' | null;
   subscriptionStatus?: 'active' | 'inactive' | 'expired';
   createdAt: string;
@@ -22,6 +23,7 @@ interface AuthContextType {
   register: (userData: RegisterData) => Promise<void>;
   logout: () => void;
   updateUser: (userData: Partial<User>) => Promise<void>;
+  refreshUser: () => Promise<void>; // Add refresh function
 }
 
 interface RegisterData {
@@ -60,7 +62,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
       if (response.ok) {
         const userData = await response.json();
-        setUser(userData.user);
+        // Map backend snake_case to frontend camelCase
+        const mappedUser = {
+          id: userData.user.id,
+          name: userData.user.name,
+          email: userData.user.email,
+          phone: userData.user.phone,
+          profilePicture: userData.user.profile_picture,
+          carbonCoins: userData.user.carbon_coins || 0,
+          subscriptionPlan: userData.user.subscription_plan,
+          subscriptionStatus: userData.user.subscription_status,
+          createdAt: userData.user.created_at,
+        };
+        setUser(mappedUser);
       } else {
         localStorage.removeItem('authToken');
       }
@@ -69,6 +83,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       localStorage.removeItem('authToken');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const refreshUser = async () => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      await fetchUserProfile(token);
     }
   };
 
@@ -86,7 +107,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
       if (response.ok) {
         localStorage.setItem('authToken', data.token);
-        setUser(data.user);
+        // Map backend response to frontend format
+        const mappedUser = {
+          id: data.user.id,
+          name: data.user.name,
+          email: data.user.email,
+          phone: data.user.phone,
+          profilePicture: data.user.profile_picture,
+          carbonCoins: data.user.carbonCoins || data.user.carbon_coins || 0,
+          subscriptionPlan: data.user.subscriptionPlan || data.user.subscription_plan,
+          subscriptionStatus: data.user.subscriptionStatus || data.user.subscription_status,
+          createdAt: data.user.createdAt || data.user.created_at,
+        };
+        setUser(mappedUser);
       } else {
         throw new Error(data.message || 'Login failed');
       }
@@ -140,7 +173,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
       if (response.ok) {
         localStorage.setItem('authToken', data.token);
-        setUser(data.user);
+        // Map backend response to frontend format
+        const mappedUser = {
+          id: data.user.id,
+          name: data.user.name,
+          email: data.user.email,
+          phone: data.user.phone,
+          profilePicture: data.user.profile_picture,
+          carbonCoins: data.user.carbonCoins || data.user.carbon_coins || 0,
+          subscriptionPlan: data.user.subscriptionPlan || data.user.subscription_plan,
+          subscriptionStatus: data.user.subscriptionStatus || data.user.subscription_status,
+          createdAt: data.user.createdAt || data.user.created_at,
+        };
+        setUser(mappedUser);
       } else {
         throw new Error(data.message || 'OTP verification failed');
       }
@@ -163,7 +208,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
       if (response.ok) {
         localStorage.setItem('authToken', data.token);
-        setUser(data.user);
+        // Map backend response to frontend format
+        const mappedUser = {
+          id: data.user.id,
+          name: data.user.name,
+          email: data.user.email,
+          phone: data.user.phone,
+          profilePicture: data.user.profile_picture,
+          carbonCoins: data.user.carbonCoins || data.user.carbon_coins || 50, // Default 50 coins
+          subscriptionPlan: data.user.subscriptionPlan || data.user.subscription_plan,
+          subscriptionStatus: data.user.subscriptionStatus || data.user.subscription_status,
+          createdAt: data.user.createdAt || data.user.created_at,
+        };
+        setUser(mappedUser);
       } else {
         throw new Error(data.message || 'Registration failed');
       }
@@ -187,7 +244,19 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       const data = await response.json();
 
       if (response.ok) {
-        setUser(data.user);
+        // Map backend response to frontend format
+        const mappedUser = {
+          id: data.user.id,
+          name: data.user.name,
+          email: data.user.email,
+          phone: data.user.phone,
+          profilePicture: data.user.profile_picture,
+          carbonCoins: data.user.carbonCoins || data.user.carbon_coins || 0,
+          subscriptionPlan: data.user.subscriptionPlan || data.user.subscription_plan,
+          subscriptionStatus: data.user.subscriptionStatus || data.user.subscription_status,
+          createdAt: data.user.createdAt || data.user.created_at,
+        };
+        setUser(mappedUser);
       } else {
         throw new Error(data.message || 'Failed to update profile');
       }
@@ -199,6 +268,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const logout = () => {
     localStorage.removeItem('authToken');
     setUser(null);
+    // Redirect to home page after logout
+    window.location.href = '/';
   };
 
   const value: AuthContextType = {
@@ -211,6 +282,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     register,
     logout,
     updateUser,
+    refreshUser,
   };
 
   return (

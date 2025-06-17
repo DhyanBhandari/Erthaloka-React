@@ -1,5 +1,5 @@
 // src/components/UserDashboard.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // Added useEffect import
 import { 
   User, 
   Mail, 
@@ -16,14 +16,16 @@ import {
   Leaf,
   MapPin,
   Clock,
-  Bell
+  Bell,
+  Coins // Import the Coins icon
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext.tsx';
 import ProtectedRoute from './ProtectedRoute.tsx';
 
 const UserDashboard: React.FC = () => {
   const { user, updateUser, logout } = useAuth();
-  const [activeTab, setActiveTab] = useState<'profile' | 'subscription' | 'bookings' | 'settings'>('profile');
+  // IMPORTANT: Added 'coins' to the activeTab type
+  const [activeTab, setActiveTab] = useState<'profile' | 'subscription' | 'bookings' | 'coins' | 'settings'>('profile');
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [editForm, setEditForm] = useState({
@@ -31,6 +33,17 @@ const UserDashboard: React.FC = () => {
     email: user?.email || '',
     phone: user?.phone || '',
   });
+
+  // Update form when user data changes
+  React.useEffect(() => {
+    if (user) {
+      setEditForm({
+        name: user.name || '',
+        email: user.email || '',
+        phone: user.phone || '',
+      });
+    }
+  }, [user]);
 
   const handleUpdateProfile = async () => {
     setLoading(true);
@@ -76,6 +89,8 @@ const UserDashboard: React.FC = () => {
     { id: 'profile', label: 'Profile', icon: <User className="w-5 h-5" /> },
     { id: 'subscription', label: 'Subscription', icon: <CreditCard className="w-5 h-5" /> },
     { id: 'bookings', label: 'Bookings', icon: <Calendar className="w-5 h-5" /> },
+    // NEW TAB: Carbon Coins
+    { id: 'coins', label: 'Carbon Coins', icon: <Coins className="w-5 h-5 text-green-300" /> }, 
     { id: 'settings', label: 'Settings', icon: <Settings className="w-5 h-5" /> },
   ];
 
@@ -99,6 +114,13 @@ const UserDashboard: React.FC = () => {
                     <span className={`font-semibold ${getPlanColor(user?.subscriptionPlan || '')}`}>
                       {getPlanName(user?.subscriptionPlan || '')}
                     </span>
+                    {/* Display Carbon Coins in header */}
+                    {user?.carbonCoins !== undefined && (
+                      <span className="ml-4 flex items-center gap-1 text-green-300">
+                        <Coins className="w-5 h-5" />
+                        {user.carbonCoins} Carbon Coins
+                      </span>
+                    )}
                   </div>
                 </div>
               </div>
@@ -333,6 +355,48 @@ const UserDashboard: React.FC = () => {
                       >
                         Explore Spaces
                       </button>
+                    </div>
+                  </div>
+                )}
+
+                {/* NEW CONTENT: Carbon Coins Tab */}
+                {activeTab === 'coins' && (
+                  <div className="space-y-6">
+                    <h2 className="text-2xl font-bold text-white">Your Carbon Coins</h2>
+                    
+                    <div className="bg-gradient-to-r from-green-700 to-blue-700 rounded-xl p-6 text-center shadow-lg">
+                      <div className="flex items-center justify-center gap-4 mb-4">
+                        <Coins className="w-12 h-12 text-white" />
+                        <span className="text-5xl font-extrabold text-white">
+                          {user?.carbonCoins !== undefined ? user.carbonCoins : '0'}
+                        </span>
+                      </div>
+                      <p className="text-white text-lg font-semibold">Your Current Carbon Coins Balance</p>
+                    </div>
+
+                    <div className="bg-gray-800/50 rounded-xl p-6">
+                      <h3 className="text-xl font-bold text-white mb-4">What are these Carbon Coins?</h3>
+                      <p className="text-gray-400 mb-4">
+                        Carbon Coins are ErthaLoka's virtual currency designed to reward your commitment to sustainability and community engagement. They are similar to loyalty points or digital rewards you might find on platforms like Zepto, Magicpin, or Swiggy.
+                      </p>
+                      <p className="text-gray-400 mb-2">
+                        You've received an initial **50 Carbon Coins** upon signing up as a welcome bonus!
+                      </p>
+                      <h4 className="text-lg font-semibold text-white mb-2">How Carbon Coins are added:</h4>
+                      <ul className="list-disc list-inside text-gray-400 mb-4">
+                        <li>**Sign-up Bonus:** 50 coins upon successful registration.</li>
+                        <li>**Future Eco-Actions:** Soon, you'll earn coins for participating in virtual eco-events, contributing to community projects, or achieving sustainability milestones (logic to be added by the platform).</li>
+                        <li>**Referrals & Promotions:** Special campaigns may offer bonus coins.</li>
+                      </ul>
+                      <h4 className="text-lg font-semibold text-white mb-2">How you can use Carbon Coins:</h4>
+                      <ul className="list-disc list-inside text-gray-400 mb-4">
+                        <li>**Discounts:** Use your coins to get discounts on purchasing virtual "spacing" within ErthaGrama or other platform services.</li>
+                        <li>**Exclusive Access:** Unlock access to premium content, events, or community features.</li>
+                        <li>**Future Rewards:** More options for using coins will be introduced, including unique digital assets or charitable contributions.</li>
+                      </ul>
+                      <p className="text-gray-400">
+                        Coins will be automatically deducted from your balance when used for eligible purchases or discounts. Keep an eye on this page for updates on new ways to earn and spend your Carbon Coins!
+                      </p>
                     </div>
                   </div>
                 )}

@@ -16,6 +16,7 @@ const authRoutes = require('./routes/auth');
 const subscriptionRoutes = require('./routes/subscription');
 const userRoutes = require('./routes/users');
 const adminRoutes = require('./routes/admin'); // NEW
+const carbonCoinsRoutes = require('./routes/carboncoins');
 
 // Import database
 const pool = require('./config/database');

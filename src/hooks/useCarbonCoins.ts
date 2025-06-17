@@ -9,19 +9,22 @@ interface CarbonCoinTransaction {
 }
 
 export const useCarbonCoins = () => {
-  const { user } = useAuth();
-  const [balance, setBalance] = useState<number>(0);
+  const { user, refreshUser } = useAuth();
   const [transactions, setTransactions] = useState<CarbonCoinTransaction[]>([]);
   const [loading, setLoading] = useState(false);
 
   const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
-  // Fetch user's carbon coin balance
-  const fetchBalance = async () => {
+  // Get balance from user context
+  const balance = user?.carbonCoins || 0;
+
+  // Fetch transaction history
+  const fetchTransactions = async () => {
     if (!user) return;
 
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/profile`, {
+      setLoading(true);
+      const response = await fetch(`${API_BASE_URL}/carbon-coins/transactions`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
         },
@@ -29,10 +32,12 @@ export const useCarbonCoins = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setBalance(data.user.carbonCoins || 0);
+        setTransactions(data.transactions || []);
       }
     } catch (error) {
-      console.error('Failed to fetch carbon coin balance:', error);
+      console.error('Failed to fetch carbon coin transactions:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -44,7 +49,7 @@ export const useCarbonCoins = () => {
 
     try {
       setLoading(true);
-      const response = await fetch(`${API_BASE_URL}/users/spend-coins`, {
+      const response = await fetch(`${API_BASE_URL}/carbon-coins/spend`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
@@ -55,10 +60,45 @@ export const useCarbonCoins = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setBalance(data.newBalance);
+        // Refresh user data to get updated balance
+        await refreshUser();
         return data;
       } else {
-        throw new Error('Failed to spend coins');
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to spend coins');
+      }
+    } catch (error) {
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Add carbon coins (for admin or special cases)
+  const addCoins = async (amount: number, reason: string) => {
+    if (!user) {
+      throw new Error('User not authenticated');
+    }
+
+    try {
+      setLoading(true);
+      const response = await fetch(`${API_BASE_URL}/carbon-coins/add`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ amount, reason }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Refresh user data to get updated balance
+        await refreshUser();
+        return data;
+      } else {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to add coins');
       }
     } catch (error) {
       throw error;
@@ -77,9 +117,10 @@ export const useCarbonCoins = () => {
     return `${amount.toLocaleString()} CC`;
   };
 
+  // Fetch transactions when user changes
   useEffect(() => {
     if (user) {
-      fetchBalance();
+      fetchTransactions();
     }
   }, [user]);
 
@@ -88,8 +129,10 @@ export const useCarbonCoins = () => {
     transactions,
     loading,
     spendCoins,
+    addCoins,
     canAfford,
     formatCoins,
-    fetchBalance,
+    fetchTransactions,
+    refreshBalance: refreshUser,
   };
 };

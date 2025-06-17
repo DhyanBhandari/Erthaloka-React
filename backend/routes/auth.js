@@ -1,3 +1,4 @@
+// backend/routes/auth.js - Updated sections
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -5,7 +6,7 @@ const passport = require('passport');
 const rateLimit = require('express-rate-limit');
 const pool = require('../config/database');
 const { body, validationResult } = require('express-validator');
-const carbonCoinService = require('../services/carbonCoinService'); // NEW
+const carbonCoinService = require('../services/carbonCoinService');
 
 const router = express.Router();
 
@@ -343,7 +344,14 @@ router.get('/google/callback',
         await carbonCoinService.grantSignupBonus(req.user.id);
       }
 
-      const token = generateToken(req.user.id);
+      // Fetch updated user data with carbon coins
+      const userResult = await pool.query(
+        'SELECT id, name, email, phone, carbon_coins, subscription_plan, subscription_status, created_at FROM users WHERE id = $1',
+        [req.user.id]
+      );
+
+      const user = userResult.rows[0];
+      const token = generateToken(user.id);
       
       // Redirect to frontend with token
       const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
@@ -410,11 +418,11 @@ router.get('/profile', authenticateToken, (req, res) => {
       name: req.user.name,
       email: req.user.email,
       phone: req.user.phone,
-      profilePicture: req.user.profile_picture,
-      carbonCoins: req.user.carbon_coins,
-      subscriptionPlan: req.user.subscription_plan,
-      subscriptionStatus: req.user.subscription_status,
-      createdAt: req.user.created_at
+      profile_picture: req.user.profile_picture,
+      carbon_coins: req.user.carbon_coins,
+      subscription_plan: req.user.subscription_plan,
+      subscription_status: req.user.subscription_status,
+      created_at: req.user.created_at
     }
   });
 });
@@ -460,11 +468,11 @@ router.put('/update-profile', authenticateToken, async (req, res) => {
         name: updatedUser.rows[0].name,
         email: updatedUser.rows[0].email,
         phone: updatedUser.rows[0].phone,
-        profilePicture: updatedUser.rows[0].profile_picture,
-        carbonCoins: updatedUser.rows[0].carbon_coins,
-        subscriptionPlan: updatedUser.rows[0].subscription_plan,
-        subscriptionStatus: updatedUser.rows[0].subscription_status,
-        createdAt: updatedUser.rows[0].created_at
+        profile_picture: updatedUser.rows[0].profile_picture,
+        carbon_coins: updatedUser.rows[0].carbon_coins,
+        subscription_plan: updatedUser.rows[0].subscription_plan,
+        subscription_status: updatedUser.rows[0].subscription_status,
+        created_at: updatedUser.rows[0].created_at
       }
     });
   } catch (error) {

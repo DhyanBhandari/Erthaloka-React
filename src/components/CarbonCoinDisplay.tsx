@@ -1,6 +1,6 @@
 import React from 'react';
 import { Coins, Info } from 'lucide-react';
-import { useCarbonCoins } from '../hooks/useCarbonCoins.ts';
+import { useAuth } from '../contexts/AuthContext.tsx';
 
 interface CarbonCoinDisplayProps {
   showTooltip?: boolean;
@@ -13,12 +13,21 @@ const CarbonCoinDisplay: React.FC<CarbonCoinDisplayProps> = ({
   size = 'md',
   onClick 
 }) => {
-  const { balance, formatCoins } = useCarbonCoins();
+  const { user } = useAuth();
+  
+  // If no user or no carbon coins data, don't render
+  if (!user || user.carbonCoins === undefined) {
+    return null;
+  }
+
+  const formatCoins = (amount: number): string => {
+    return `${amount.toLocaleString()} CC`;
+  };
 
   const sizeClasses = {
-    sm: 'text-sm',
-    md: 'text-base',
-    lg: 'text-lg'
+    sm: 'text-sm px-2 py-1',
+    md: 'text-base px-3 py-2',
+    lg: 'text-lg px-4 py-3'
   };
 
   const iconSizes = {
@@ -29,14 +38,14 @@ const CarbonCoinDisplay: React.FC<CarbonCoinDisplayProps> = ({
 
   return (
     <div 
-      className={`inline-flex items-center gap-2 bg-yellow-600/20 text-yellow-400 px-3 py-2 rounded-lg border border-yellow-600/30 ${
+      className={`inline-flex items-center gap-2 bg-yellow-600/20 text-yellow-400 rounded-lg border border-yellow-600/30 ${
         onClick ? 'cursor-pointer hover:bg-yellow-600/30 transition-colors' : ''
       } ${sizeClasses[size]}`}
       onClick={onClick}
       title={showTooltip ? "Carbon Coins - Use for eco-friendly purchases and space bookings" : undefined}
     >
       <Coins className={`${iconSizes[size]} animate-pulse`} />
-      <span className="font-bold">{formatCoins(balance)}</span>
+      <span className="font-bold">{formatCoins(user.carbonCoins)}</span>
       {showTooltip && (
         <Info className="w-4 h-4 text-yellow-400/60" />
       )}
