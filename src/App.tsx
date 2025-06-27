@@ -113,7 +113,7 @@ const App: React.FC = () => {
       <div
         className="fixed inset-0 w-full h-full z-0"
         style={{
-          backgroundImage: 'url(/bg.jpeg)',
+          backgroundImage: 'url(/bg.png)',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -121,7 +121,7 @@ const App: React.FC = () => {
         }}
       >
         {/* Overlay for better text readability */}
-        <div className="absolute inset-0 bg-black/40"></div>
+        <div className="absolute inset-0 "></div>
       </div>
 
       {/* Main Content wrapped by AuthProvider */}

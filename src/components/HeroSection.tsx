@@ -7,11 +7,10 @@ const HeroSection: React.FC = () => {
   return (
     <section id="home" className="relative w-full h-screen flex items-center justify-center">
       <div className="container mx-auto px-4 flex flex-col items-center justify-center h-full text-center relative z-10">
-        <div className="w-32 h-32 mb-8 bg-green-600 rounded-full flex items-center justify-center animate-pulse shadow-2xl">
-          <Leaf className="w-16 h-16 text-white" />
-        </div>
+        
         <h1 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight animate-fade-in drop-shadow-2xl">
-          A Tech-Powered SustainABLE ECOverse
+          Tech powered Co-Existic Universe
+
         </h1>
         <p className="text-lg md:text-2xl text-white mb-8 animate-fade-in delay-300 drop-shadow-lg">
           A regenerative ecosystem for People, Planet & Purpose — driven by communities and enabled by technology.
