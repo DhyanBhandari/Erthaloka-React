@@ -1,3 +1,7 @@
+// Move ALL imports to the top
+import { useEffect } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+
 // Google Analytics Integration
 export interface GAEvent {
   action: string;
@@ -142,9 +146,6 @@ export class AnalyticsService {
 export const analytics = AnalyticsService.getInstance();
 
 // React Hook for Analytics
-import { useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext.tsx';
-
 export const useAnalytics = () => {
   const { user } = useAuth();
 
