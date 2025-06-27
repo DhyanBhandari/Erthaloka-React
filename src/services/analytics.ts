@@ -1,6 +1,6 @@
 // Move ALL imports to the top
 import { useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext.tsx';
 
 // Google Analytics Integration
 export interface GAEvent {
