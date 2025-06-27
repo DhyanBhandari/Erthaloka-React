@@ -49,7 +49,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentPath, setCurrentPath }) => {
   }, [isOpen]);
 
   const navItems = [
-    { label: 'About Us', path: '#about' },
+    { label: 'Lokations', path: '#about' },
     { label: 'Ecosystem', path: '#ecosystem' },
     { label: 'Innovation', path: '#innovation' },
     { label: 'Contact', path: '#contact' }
@@ -76,7 +76,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentPath, setCurrentPath }) => {
 
   return (
     <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-      isScrolled ? 'bg-black shadow-md' : 'bg-black'
+      isScrolled ? 'bg-black shadow-md' : 'bg-white'
     }`}>
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">

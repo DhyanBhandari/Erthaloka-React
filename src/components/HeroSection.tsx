@@ -9,10 +9,10 @@ const HeroSection: React.FC = () => {
       <div className="container mx-auto px-4 flex flex-col items-center justify-center h-full text-center relative z-10">
         
         <h1 className="text-3xl md:text-5xl font-bold text-white mb-6 leading-tight animate-fade-in drop-shadow-2xl">
-          Tech powered Co-Existic Universe
+          A Tech-Powered Co-ExIStic ECOverse
 
         </h1>
-        <p className="text-lg md:text-2xl text-white mb-8 animate-fade-in delay-300 drop-shadow-lg">
+        <p className="text-lg md:text-xl text-white mb-8 animate-fade-in delay-300 drop-shadow-lg">
           A regenerative ecosystem for People, Planet & Purpose — driven by communities and enabled by technology.
         </p>
         <div className="flex flex-wrap justify-center gap-4 animate-fade-in delay-500">
