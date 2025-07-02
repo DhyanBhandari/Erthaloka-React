@@ -28,13 +28,16 @@ const HeroSection: React.FC = () => {
           >
             Explore the ECOsystem
           </button>
-          <button
-  onClick={() => window.open('/erthacannect', '_blank', 'noopener,noreferrer')}
-  className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full hover:bg-white hover:text-green-800 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white shadow-2xl hover:shadow-white/50"
-  aria-label="Join our WhatsApp community"
->
-  Join the Community
-</button>
+         <button
+              onClick={() =>
+                window.open('https://ertha-coin-governance-hub.vercel.app/', '_blank', 'noopener,noreferrer')
+              }
+              className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full hover:bg-white hover:text-green-800 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-white shadow-2xl hover:shadow-white/50"
+              aria-label="Join our WhatsApp community"
+            >
+              Join the Community
+            </button>
+
 
         </div>
       </div>

@@ -1,14 +1,10 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import HeroSection from '../components/HeroSection.tsx';
 import AboutErthaLokaSection from '../components/AboutErthaLokaSection.tsx';
-
 import WhatWeDoSection from '../components/WhatWeDo.tsx';
 import ErthalokaEcosystemSection from '../components/ErthalokaEcosystemSection.tsx';
-import SubscriptionTeaserSection from '../components/SubscriptionTeaserSection.tsx';
-//import UpcomingSection from '../components/UpcomingSection.tsx';
 import SustainableTechInnovationsSection from '../components/SustainableTechInnovations.tsx';
 import GetInvolvedSection from '../components/GetInvolvedSection.tsx';
-//import TeamSection from '../components/TeamSection.tsx';
 import GetInTouchSection from '../components/GetInTouch.tsx';
 
 interface HomePageProps {
@@ -16,18 +12,36 @@ interface HomePageProps {
 }
 
 const HomePage: React.FC<HomePageProps> = ({ setCurrentPath }) => {
+  const getInTouchRef = useRef<HTMLDivElement>(null);
+  const requestDeckRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    (window as any).scrollToGetInTouch = () => {
+      getInTouchRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+    (window as any).scrollToRequestDeck = () => {
+      requestDeckRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+  }, []);
+
   return (
     <div className="min-h-screen">
       <HeroSection />
+      <GetInvolvedSection />
       <AboutErthaLokaSection />
-    
       <WhatWeDoSection />
       <ErthalokaEcosystemSection setCurrentPath={setCurrentPath} />
-      {/* <UpcomingSection setCurrentPath={setCurrentPath} /> */}
       <SustainableTechInnovationsSection />
-      {/*<SubscriptionTeaserSection setCurrentPath={setCurrentPath} /> */}
-      <GetInvolvedSection />
-      <GetInTouchSection />
+
+      {/* Request Deck Section (Target for Scroll) */}
+      <div ref={requestDeckRef} className="pt-32 pb-20 text-center text-white text-2xl font-semibold">
+    
+      </div>
+
+      {/* Get In Touch Section (Target for Scroll) */}
+      <div ref={getInTouchRef}>
+        <GetInTouchSection />
+      </div>
     </div>
   );
 };

@@ -7,29 +7,29 @@ interface ErthalokaEcosystemSectionProps {
 const ErthalokaEcosystemSection: React.FC<ErthalokaEcosystemSectionProps> = ({ setCurrentPath }) => {
   const ecosystemItems = [
     {
-      title: "🌿 ErthaGrama : The Living Ecosystem",
+      title: "🌿 ErthaGrama",
       image: "../images/Erthagrama.png",
       gradient: "from-green-800 to-green-900",
       hoverGradient: "group-hover:from-green-600 group-hover:to-lime-500",
       link: "/erthagrama"
     },
     {
-      title: "🌍 ErthaCANnect : The Global Network",
+      title: "🌍 ErthaCANnect",
       image: "../images/ErthaCANnect.png",
       gradient: "from-blue-800 to-blue-900",
       hoverGradient: "group-hover:from-blue-600 group-hover:to-cyan-400",
       link: "/erthacannect"
     },
     {
-      title: "🛒 ErthaMart : Marketplace of the Future",
+      title: "🛒 ErthaMart ",
       image: "../images/ErthaMart.png",
       gradient: "from-teal-800 to-teal-900",
       hoverGradient: "group-hover:from-teal-500 group-hover:to-green-300",
       link: "/erthabazaar"
     },
     {
-      title: "🔧 Sustainable Circle : Events",
-      image: "../images/SustainABLEcircle.png",
+      title: "🔧 Sustainable Circle ",
+      image: "../images/SustainableCircle.png",
       gradient: "from-orange-800 to-orange-900",
       hoverGradient: "group-hover:from-orange-500 group-hover:to-yellow-400",
       link: "/sustainablecircle"

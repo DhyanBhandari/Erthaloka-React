@@ -49,7 +49,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentPath, setCurrentPath }) => {
   }, [isOpen]);
 
   const navItems = [
-    { label: 'Lokations', path: '#about' },
+    { label: 'Lokations', path: '/erthagrama' },
     { label: 'Ecosystem', path: '#ecosystem' },
     { label: 'Innovation', path: '#innovation' },
     { label: 'Contact', path: '#contact' }
