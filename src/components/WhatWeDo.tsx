@@ -54,7 +54,7 @@ const WhatWeDoSection: React.FC = () => {
         "Real-time environmental monitoring with AI & IoT",
         "Waste-to-resource loops"
       ],
-      link: "/erthagrama",
+      link: "/Lokations",
       gradient: "from-green-500/20 to-emerald-600/20",
       hoverGradient: "group-hover:from-green-400/30 group-hover:to-emerald-500/30",
       accentColor: "text-green-400",

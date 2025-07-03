@@ -113,7 +113,7 @@ class EmailService {
             <div class="feature">
               <h3>🏡 What's Next?</h3>
               <ul>
-                <li>Explore our ErthaGrama spaces across India</li>
+                <li>Explore our Lokations spaces across India</li>
                 <li>Connect with like-minded changemakers</li>
                 <li>Join events and workshops in your area</li>
                 <li>Consider upgrading to access exclusive benefits</li>
@@ -193,7 +193,7 @@ class EmailService {
             
             <h3>🚀 What You Can Do Now:</h3>
             <ul>
-              <li>Book stays at ErthaGrama spaces</li>
+              <li>Book stays at Lokations spaces</li>
               <li>Access exclusive events and workshops</li>
               <li>Connect with community members</li>
               <li>Join our monthly regeneration circles</li>
@@ -242,7 +242,7 @@ class EmailService {
         <div class="container">
           <div class="header">
             <h1>🏡 Booking Confirmed!</h1>
-            <p>Your ErthaGrama space is reserved</p>
+            <p>Your Lokations space is reserved</p>
           </div>
           
           <div class="content">

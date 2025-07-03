@@ -5,35 +5,30 @@ interface ErthalokaEcosystemSectionProps {
 }
 
 const ErthalokaEcosystemSection: React.FC<ErthalokaEcosystemSectionProps> = ({ setCurrentPath }) => {
+  
   const ecosystemItems = [
     {
-      title: "🌿 ErthaGrama",
-      image: "../images/Erthagrama.png",
+      title: "Lokations",
+      image: "../images/erthagrama.png",
       gradient: "from-green-800 to-green-900",
       hoverGradient: "group-hover:from-green-600 group-hover:to-lime-500",
-      link: "/erthagrama"
+      link: "/Lokations"
     },
     {
-      title: "🌍 ErthaCANnect",
+      title: "Governance",
       image: "../images/ErthaCANnect.png",
       gradient: "from-blue-800 to-blue-900",
       hoverGradient: "group-hover:from-blue-600 group-hover:to-cyan-400",
       link: "/erthacannect"
     },
     {
-      title: "🛒 ErthaMart ",
+      title: "Economy",
       image: "../images/ErthaMart.png",
       gradient: "from-teal-800 to-teal-900",
       hoverGradient: "group-hover:from-teal-500 group-hover:to-green-300",
       link: "/erthabazaar"
     },
-    {
-      title: "🔧 Sustainable Circle ",
-      image: "../images/SustainableCircle.png",
-      gradient: "from-orange-800 to-orange-900",
-      hoverGradient: "group-hover:from-orange-500 group-hover:to-yellow-400",
-      link: "/sustainablecircle"
-    }
+   
   ];
 
   const handleEcosystemClick = (link: string) => {
@@ -47,7 +42,7 @@ const ErthalokaEcosystemSection: React.FC<ErthalokaEcosystemSectionProps> = ({ s
           <h2 className="text-4xl font-bold text-center mb-16 animate-fade-in text-white">
             The ErthaLoka Ecosystem
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-8">
             {ecosystemItems.map((item, index) => (
               <button
                 key={index}

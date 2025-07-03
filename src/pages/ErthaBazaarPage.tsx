@@ -7,8 +7,9 @@ const ErthaBazaarPage: React.FC = () => {
         <div className="container mx-auto px-6 max-w-5xl">
           <div className="bg-black/70 backdrop-blur-lg rounded-3xl p-8 border border-yellow-500/20 shadow-2xl hover:shadow-yellow-500/30 transition-all duration-500">
             <header className="text-center mb-8">
-              <h1 className="text-4xl md:text-5xl font-bold animate-fade-in drop-shadow-lg text-yellow-400">🛒 ErthaBazaar</h1>
+              <h1 className="text-4xl md:text-5xl font-bold animate-fade-in drop-shadow-lg text-yellow-400">🛒 ErthaMART</h1>
               <p className="text-xl mt-4 animate-fade-in delay-200 text-yellow-200">Decentralized Nature-Based Economy</p>
+                 <h1> " Coming Soon</h1>
             </header>
             <section className="max-w-4xl mx-auto">
               <div className="bg-yellow-900/50 backdrop-blur-md rounded-2xl p-8 animate-fade-in delay-400 hover:scale-105 transition-all duration-500 border border-yellow-600/30">
@@ -18,6 +19,7 @@ const ErthaBazaarPage: React.FC = () => {
                 </p>
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="bg-yellow-900/50 p-6 rounded-xl hover:bg-yellow-800/50 transition-all duration-300 hover:scale-105 border border-yellow-600/20">
+               
                     <h3 className="text-xl font-bold mb-3 text-yellow-300">🌱 Sustainable Products</h3>
                     <p className="text-yellow-100">Curated selection of eco-friendly products that support regenerative practices.</p>
                   </div>

@@ -45,7 +45,7 @@ const ErthaCANnectPage: React.FC = () => {
     {
       icon: <Network className="w-6 h-6" />,
       title: "Current Ecosystem",
-      description: "ErthaCANnect, ErthaGrama, ErthaMART (SustainABLE Circle, Erthitect Studio, XplorED, Travellers Triibe in pipeline) power a living regenerative ecosystem."
+      description: "ErthaCANnect, Lokations, ErthaMART (SustainABLE Circle, Erthitect Studio, XplorED, Travellers Triibe in pipeline) power a living regenerative ecosystem."
     },
     {
       icon: <Map className="w-6 h-6" />,

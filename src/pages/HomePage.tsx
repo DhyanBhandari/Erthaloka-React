@@ -27,7 +27,7 @@ const HomePage: React.FC<HomePageProps> = ({ setCurrentPath }) => {
   return (
     <div className="min-h-screen">
       <HeroSection />
-      <GetInvolvedSection />
+      
       <AboutErthaLokaSection />
       <WhatWeDoSection />
       <ErthalokaEcosystemSection setCurrentPath={setCurrentPath} />
@@ -40,6 +40,7 @@ const HomePage: React.FC<HomePageProps> = ({ setCurrentPath }) => {
 
       {/* Get In Touch Section (Target for Scroll) */}
       <div ref={getInTouchRef}>
+        <GetInvolvedSection />
         <GetInTouchSection />
       </div>
     </div>

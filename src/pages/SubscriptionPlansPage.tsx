@@ -35,7 +35,7 @@ const SubscriptionPlansPage: React.FC = () => {
       color: 'text-green-400',
       gradient: 'from-green-500 to-emerald-600',
       features: [
-        'Access to ErthaGrama spaces',
+        'Access to Lokations spaces',
         'Basic co-living amenities',
         'Community events participation',
         'Sustainable living workshops',

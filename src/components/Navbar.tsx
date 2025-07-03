@@ -23,10 +23,10 @@ const Navbar: React.FC<NavbarProps> = ({ currentPath, setCurrentPath }) => {
   }, []);
 
   const navItems = [
-    { label: 'Lokations', path: '/erthagrama' },
     { label: 'Ecosystem', path: '#ecosystem' },
+    { label: 'ErthaDAO', path: '/ErthaDAO' },
     { label: 'Innovation', path: '#innovation' },
-    { label: 'Contact', path: '#contact' },
+    { label: 'Initiatives', path: '#initiatives' },
   ];
 
   const handleNavClick = (path: string) => {

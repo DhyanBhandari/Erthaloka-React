@@ -3,7 +3,7 @@ import Navbar from './components/Navbar.tsx';
 import { AuthProvider } from './contexts/AuthContext.tsx'; 
 import Footer from './components/Footer.tsx';
 import HomePage from './pages/HomePage.tsx';
-import ErthaGramaPage from './pages/ErthaGramaPage.tsx';
+import LokationsPage from './pages/ErthaGramaPage.tsx';
 import ErthaCANnectPage from './pages/ErthaCANnectPage.tsx';
 import ErthaBazaarPage from './pages/ErthaBazaarPage.tsx';
 import SustainableCirclePage from './pages/SustainableCirclePage.tsx';
@@ -87,7 +87,7 @@ const App: React.FC = () => {
   // Route components mapping
   const routes: { [key: string]: React.FC<{ setCurrentPath?: (path: string) => void }> } = {
     '/': () => <HomePage setCurrentPath={setCurrentPath} />,
-    '/erthagrama': ErthaGramaPage,
+    '/Lokations': LokationsPage,
     '/erthacannect': ErthaCANnectPage,
     '/erthabazaar': ErthaBazaarPage,
     '/sustainablecircle': SustainableCirclePage,

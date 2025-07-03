@@ -347,10 +347,10 @@ const UserDashboard: React.FC = () => {
                       </div>
                       <h3 className="text-xl font-bold text-white mb-2">No Bookings Yet</h3>
                       <p className="text-gray-400 mb-6">
-                        Book your first ErthaGrama space or event to get started.
+                        Book your first Lokations space or event to get started.
                       </p>
                       <button
-                        onClick={() => window.location.href = '/erthagrama'}
+                        onClick={() => window.location.href = '/Lokations'}
                         className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg transition-colors"
                       >
                         Explore Spaces
@@ -390,7 +390,7 @@ const UserDashboard: React.FC = () => {
                       </ul>
                       <h4 className="text-lg font-semibold text-white mb-2">How you can use Carbon Coins:</h4>
                       <ul className="list-disc list-inside text-gray-400 mb-4">
-                        <li>**Discounts:** Use your coins to get discounts on purchasing virtual "spacing" within ErthaGrama or other platform services.</li>
+                        <li>**Discounts:** Use your coins to get discounts on purchasing virtual "spacing" within Lokations or other platform services.</li>
                         <li>**Exclusive Access:** Unlock access to premium content, events, or community features.</li>
                         <li>**Future Rewards:** More options for using coins will be introduced, including unique digital assets or charitable contributions.</li>
                       </ul>

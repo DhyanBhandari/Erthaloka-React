@@ -94,7 +94,7 @@ A comprehensive platform for regenerative communities featuring authentication, 
 - **Subscription analytics and reporting**
 
 ### Core Functionality
-- **Space booking system** for ErthaGrama locations
+- **Space booking system** for Lokations locations
 - **Community networking** through ErthaCANnect
 - **Sustainable marketplace** via ErthaBazaar
 - **Event management** with Sustainable Circle
@@ -251,7 +251,7 @@ erthaloka-project/
 │   │   │   └── useCarbonCoins.ts           # 🆕 NEW
 │   │   ├── pages/
 │   │   │   ├── HomePage.tsx
-│   │   │   ├── ErthaGramaPage.tsx
+│   │   │   ├── LokationsPage.tsx
 │   │   │   ├── ErthaCANnectPage.tsx
 │   │   │   ├── ErthaBazaarPage.tsx
 │   │   │   ├── SustainableCirclePage.tsx

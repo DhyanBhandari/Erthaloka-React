@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const ErthaGramaPage: React.FC = () => {
+const LokationsPage: React.FC = () => {
   const [selectedSpace, setSelectedSpace] = useState<any>(null);
 
   const spaces = [
@@ -39,7 +39,7 @@ const ErthaGramaPage: React.FC = () => {
               🏡 Our Living Spaces
             </h2>
             <p className="text-center max-w-3xl mx-auto text-lg text-white mb-10 animate-fade-in delay-200 drop-shadow-md">
-              Welcome to the ErthaGrama living spaces—designed for those who seek to live regeneratively.
+              Welcome to the Lokations living spaces—designed for those who seek to live regeneratively.
             </p>
 
             <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
@@ -94,4 +94,4 @@ const ErthaGramaPage: React.FC = () => {
   );
 };
 
-export default ErthaGramaPage;
+export default LokationsPage;
