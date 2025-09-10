@@ -2,4 +2,6 @@
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/f4919cb5-92fb-4c3c-b313-7c339ae6022c  
+**URL**: https://lovable.dev/projects/f4919cb5-92fb-4c3c-b313-7c339ae6022c
+
+Deployed with Vercel.  
