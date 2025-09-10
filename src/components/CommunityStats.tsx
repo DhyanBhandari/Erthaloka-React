@@ -54,13 +54,13 @@ const CommunityStats = () => {
 
   // Real community images and videos
   const communityMedia = [
-    { id: 1, type: 'image', url: "/community/com1.jpg", alt: "Community Event 1" },
-    { id: 2, type: 'video', url: "/community/vid1.mp4", alt: "Community Video 1" },
-    { id: 3, type: 'image', url: "/community/com2.jpg", alt: "Community Event 2" },
-    { id: 4, type: 'image', url: "/community/com3.jpg", alt: "Community Event 3" },
-    { id: 5, type: 'video', url: "/community/vid2.mp4", alt: "Community Video 2" },
-    { id: 6, type: 'image', url: "/community/com4.jpg", alt: "Community Event 4" },
-    { id: 7, type: 'image', url: "/community/com5.jpg", alt: "Community Event 5" }
+    { id: 1, type: 'image', url: "/com1.jpg", alt: "Community Event 1" },
+    { id: 2, type: 'video', url: "/vid1.mp4", alt: "Community Video 1" },
+    { id: 3, type: 'image', url: "/com2.jpg", alt: "Community Event 2" },
+    { id: 4, type: 'image', url: "/com3.jpg", alt: "Community Event 3" },
+    { id: 5, type: 'video', url: "/vid2.mp4", alt: "Community Video 2" },
+    { id: 6, type: 'image', url: "/com4.jpg", alt: "Community Event 4" },
+    { id: 7, type: 'image', url: "/com5.jpg", alt: "Community Event 5" }
   ];
 
   return (
