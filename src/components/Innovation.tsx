@@ -13,8 +13,8 @@ const Innovation = () => {
       image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800",
       details: "Our deep technology stack includes advanced machine learning models, predictive analytics, and real-time data processing capabilities. We utilize neural networks to analyze complex environmental patterns and generate actionable insights for sustainable development.",
       stats: [
-        { label: "AI Models", value: "50+" },
-        { label: "Predictions/Day", value: "10K+" }
+        { label: "AI Models", value: "0" },
+        { label: "Predictions/Day", value: "0" }
       ]
     },
     {
@@ -24,8 +24,8 @@ const Innovation = () => {
       image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800",
       details: "Our IoT network consists of thousands of sensors monitoring air quality, water levels, soil health, and energy consumption. These devices operate on ultra-low power and communicate via efficient protocols.",
       stats: [
-        { label: "Active Sensors", value: "5K+" },
-        { label: "Data Points/Min", value: "1M+" }
+        { label: "Active Sensors", value: "0" },
+        { label: "Data Points/Min", value: "0" }
       ]
     },
     {
@@ -35,8 +35,8 @@ const Innovation = () => {
       image: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800",
       details: "Every token holder has voting rights proportional to their stake. Proposals are submitted on-chain, discussed transparently, and executed automatically through smart contracts.",
       stats: [
-        { label: "Active Voters", value: "2K+" },
-        { label: "Proposals Passed", value: "150+" }
+        { label: "Active Voters", value: "0" },
+        { label: "Proposals Passed", value: "0" }
       ]
     },
     {
@@ -46,8 +46,8 @@ const Innovation = () => {
       image: "https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?w=800",
       details: "Our blockchain tracks materials from production to recycling, ensuring transparency and accountability. Smart contracts automatically reward sustainable practices and penalize waste.",
       stats: [
-        { label: "Items Tracked", value: "100K+" },
-        { label: "Waste Reduced", value: "40%" }
+        { label: "Items Tracked", value: "0" },
+        { label: "Waste Reduced", value: "0%" }
       ]
     }
   ];

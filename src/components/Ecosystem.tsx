@@ -17,8 +17,8 @@ const Ecosystem = () => {
       color: "from-green-400 to-emerald-400",
       image: "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800",
       stats: [
-        { label: "Trees Planted", value: "50K+" },
-        { label: "Carbon Offset", value: "1000T" }
+        { label: "Trees Planted", value: "0" },
+        { label: "Carbon Offset", value: "0T" }
       ]
     },
     {
@@ -28,8 +28,8 @@ const Ecosystem = () => {
       color: "from-emerald-400 to-green-400",
       image: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=800",
       stats: [
-        { label: "Active Members", value: "3.5K+" },
-        { label: "Proposals Passed", value: "150+" }
+        { label: "Active Members", value: "0" },
+        { label: "Proposals Passed", value: "0" }
       ]
     },
     {
@@ -39,8 +39,8 @@ const Ecosystem = () => {
       color: "from-green-400 to-emerald-400",
       image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800",
       stats: [
-        { label: "DApps Built", value: "30+" },
-        { label: "Smart Contracts", value: "100+" }
+        { label: "DApps Built", value: "0" },
+        { label: "Smart Contracts", value: "0" }
       ]
     },
     {
@@ -50,8 +50,8 @@ const Ecosystem = () => {
       color: "from-emerald-400 to-green-400",
       image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800",
       stats: [
-        { label: "Transactions", value: "100K+" },
-        { label: "Security Audits", value: "12" }
+        { label: "Transactions", value: "0" },
+        { label: "Security Audits", value: "0" }
       ]
     }
   ];

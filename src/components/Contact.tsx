@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Mail, MessageCircle, Send, Twitter, Github } from "lucide-react";
+import { Mail, MessageCircle, Send, Twitter, Github, Phone, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 
 const Contact = () => {
@@ -90,7 +90,7 @@ const Contact = () => {
               viewport={{ once: true }}
               transition={{ delay: 0.2, duration: 0.8 }}
             >
-              <motion.div 
+              <motion.div
                 className="flex items-start space-x-4"
                 whileHover={{ x: 10 }}
                 transition={{ duration: 0.3 }}
@@ -100,12 +100,43 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-white mb-2">Email Us</h3>
-                  <p className="text-gray-400 hover:text-green-400 transition-colors cursor-pointer">hello@erthaloka.com</p>
-                  <p className="text-gray-400 hover:text-green-400 transition-colors cursor-pointer">partnerships@erthaloka.com</p>
+                  <p className="text-gray-400 hover:text-green-400 transition-colors cursor-pointer">erthaloka@gmail.com</p>
+                  <p className="text-gray-400 hover:text-green-400 transition-colors cursor-pointer">connect@erthaloka.com</p>
                 </div>
               </motion.div>
 
-              <motion.div 
+              <motion.div
+                className="flex items-start space-x-4"
+                whileHover={{ x: 10 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Phone className="w-6 h-6 text-blue-400" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-2">Call Us</h3>
+                  <p className="text-gray-400 hover:text-green-400 transition-colors cursor-pointer">+91 78297 78299</p>
+                </div>
+              </motion.div>
+
+              <motion.div
+                className="flex items-start space-x-4"
+                whileHover={{ x: 10 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                  <MapPin className="w-6 h-6 text-purple-400" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-2">Visit Us</h3>
+                  <p className="text-gray-400">MDR 1115, Kaatu Medu Veedhi</p>
+                  <p className="text-gray-400">Auroville, Kuilapalayam</p>
+                  <p className="text-gray-400">Bommayapalayam</p>
+                  <p className="text-gray-400">Tamil Nadu 605101</p>
+                </div>
+              </motion.div>
+
+              <motion.div
                 className="flex items-start space-x-4"
                 whileHover={{ x: 10 }}
                 transition={{ duration: 0.3 }}
@@ -229,104 +260,19 @@ const Contact = () => {
                   </motion.div>
 
                   <motion.div
-                    className="relative group"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    className="relative"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 1.0 }}
                   >
-                    <div className="relative">
-                      {/* Outer Ring */}
-                      <motion.div 
-                        className="absolute inset-0 rounded-full border-3 border-green-400/30"
-                        whileHover={{ 
-                          borderColor: "rgb(34 197 94 / 0.6)",
-                          scale: 1.02
-                        }}
-                        transition={{ duration: 0.3 }}
-                      />
-                      
-                      {/* Rotating Ring */}
-                      <motion.div 
-                        className="absolute inset-2 rounded-full border-2 border-t-green-400 border-r-transparent border-b-emerald-400 border-l-transparent"
-                        animate={{ rotate: 360 }}
-                        transition={{ 
-                          duration: 3,
-                          repeat: Infinity,
-                          ease: "linear"
-                        }}
-                      />
-                      
-                      {/* Button Background */}
-                      <motion.button 
-                        className="relative w-full py-6 px-8 bg-black/40 backdrop-blur-xl border-2 border-green-500/20 rounded-full text-white font-bold text-lg transition-all duration-300 group-hover:bg-green-500/10 group-hover:border-green-400/40 overflow-hidden"
-                        whileHover={{
-                          boxShadow: "0 0 30px rgba(34, 197, 94, 0.3)"
-                        }}
-                      >
-                        {/* Power Symbol */}
-                        <div className="absolute left-8 top-1/2 -translate-y-1/2">
-                          <div className="relative w-6 h-6">
-                            {/* Power circle */}
-                            <motion.div 
-                              className="absolute inset-0 rounded-full border-2 border-green-400"
-                              initial={{ rotate: 0, scale: 0.8 }}
-                              whileHover={{ 
-                                rotate: 180, 
-                                scale: 1,
-                                borderColor: "rgb(16 185 129)"
-                              }}
-                              transition={{ duration: 0.3 }}
-                            />
-                            {/* Power line */}
-                            <motion.div 
-                              className="absolute top-0 left-1/2 w-0.5 h-3 bg-green-400 -translate-x-1/2"
-                              whileHover={{ 
-                                backgroundColor: "rgb(16 185 129)",
-                                height: "16px"
-                              }}
-                              transition={{ duration: 0.3 }}
-                            />
-                          </div>
-                        </div>
-                        
-                        {/* Button Text */}
-                        <span className="relative z-10 flex items-center justify-center">
-                          Send Message
-                        </span>
-                        
-                        {/* Animated Dots */}
-                        <div className="absolute right-6 top-1/2 -translate-y-1/2 flex space-x-1">
-                          {[0, 1, 2].map((i) => (
-                            <motion.div
-                              key={i}
-                              className="w-1.5 h-1.5 bg-green-400 rounded-full"
-                              animate={{
-                                scale: [0.5, 1, 0.5],
-                                opacity: [0.3, 1, 0.3]
-                              }}
-                              transition={{
-                                duration: 1.5,
-                                delay: i * 0.2,
-                                repeat: Infinity,
-                                ease: "easeInOut"
-                              }}
-                            />
-                          ))}
-                        </div>
-                        
-                        {/* Pulse Effect on Hover */}
-                        <motion.div 
-                          className="absolute inset-0 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-full opacity-0 group-hover:opacity-100"
-                          animate={{
-                            scale: [1, 1.05, 1],
-                          }}
-                          transition={{
-                            duration: 2,
-                            repeat: Infinity,
-                            ease: "easeInOut"
-                          }}
-                        />
-                      </motion.button>
-                    </div>
+                    <Button
+                      type="submit"
+                      className="w-full py-6 px-8 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-bold text-lg rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-green-500/30"
+                    >
+                      <Send className="w-5 h-5 mr-2" />
+                      Send Message
+                    </Button>
                   </motion.div>
                 </form>
               </div>

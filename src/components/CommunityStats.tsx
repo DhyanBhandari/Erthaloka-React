@@ -16,7 +16,7 @@ const CommunityStats = () => {
   const stats = [
     {
       icon: Users,
-      value: "3.5k+",
+      value: "5",
       label: "Accounts on voyage",
       description: "Growing community of regenerative innovators"
     },
@@ -28,25 +28,25 @@ const CommunityStats = () => {
     },
     {
       icon: Award,
-      value: "30M+",
+      value: "0",
       label: "Guardian Rewards",
       description: "Distributed to community contributors"
     },
     {
       icon: Activity,
-      value: "100k+",
+      value: "0",
       label: "TestNet Interactions",
       description: "Active blockchain participation"
     },
     {
       icon: Code,
-      value: "30+",
+      value: "0",
       label: "Applications",
       description: "Built on our regenerative platform"
     },
     {
       icon: Globe,
-      value: "20+",
+      value: "3+",
       label: "Countries",
       description: "Global community presence"
     }
